@@ -1,0 +1,132 @@
+<div ng-show="formularios.formulario.display" class="row">
+    <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4 class="panel-title text-capitalize">
+                    FORMULARIO / Autoridades
+                </h4>
+            </div>
+
+            <div class="panel-body">
+
+                <!-- Archivos -->
+                <div class="input-field">
+                    <div class="input-group-addon">FOTOGRAFIA</div>
+                </div>
+                <button ng-show="formularios.formulario.botones.nuevo" ng-click="formularios.formulario.acciones.upload()" class="btn btn-info" type="button">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    Fotografia
+                </button>
+                <button ng-show="formularios.formulario.botones.modificar" ng-click="formularios.formulario.acciones.upload()" class="btn btn-info" type="button">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    Fotografia
+                </button>
+                <div id="fotografia"></div>
+                
+                <!-- Nombre -->
+                <div class="input-group">
+                    <div class="input-group-addon">NOMBRE</div>
+                    <input class="form-control" type="text" maxlength="80" ng-model="modelo.nombre" ng-disabled="formularios.formulario.disabled">
+                </div>
+
+                <!-- Apellido -->
+                <div class="input-group">
+                    <div class="input-group-addon">APELLIDO</div>
+                    <input class="form-control" type="text" maxlength="80" ng-model="modelo.apellido" ng-disabled="formularios.formulario.disabled">
+                </div>
+
+                <!-- Desde -->
+                <div class="input-group">
+                    <div class="input-group-addon">DESDE</div>
+                    <select class="form-control" ng-model="desde.dia" ng-disabled="formularios.formulario.disabled">
+                        <option ng-repeat="d in dias" value="{{d}}">{{d}}</option>
+                    </select>
+                    <div class="input-group-addon">/</div>
+                    <select class="form-control" ng-model="desde.mes" ng-disabled="formularios.formulario.disabled">
+                        <option ng-repeat="m in meses" value="{{m}}">{{m}}</option>
+                    </select>
+                    <div class="input-group-addon">/</div>
+                    <select class="form-control" ng-model="desde.anio" ng-disabled="formularios.formulario.disabled">
+                        <option ng-repeat="a in anios" value="{{a}}">{{a}}</option>
+                    </select>
+                </div>
+
+                <!-- Hasta -->
+                <div class="input-group">
+                    <div class="input-group-addon">HASTA</div>
+                    <select class="form-control" ng-model="hasta.dia" ng-disabled="formularios.formulario.disabled">
+                        <option ng-repeat="d in dias" value="{{d}}">{{d}}</option>
+                    </select>
+                    <div class="input-group-addon">/</div>
+                    <select class="form-control" ng-model="hasta.mes" ng-disabled="formularios.formulario.disabled">
+                        <option ng-repeat="m in meses" value="{{m}}">{{m}}</option>
+                    </select>
+                    <div class="input-group-addon">/</div>
+                    <select class="form-control" ng-model="hasta.anio" ng-disabled="formularios.formulario.disabled">
+                        <option ng-repeat="a in anios" value="{{a}}">{{a}}</option>
+                    </select>
+                </div>
+
+                 <!-- Cargo -->
+                <div class="input-group">
+                    <div class="input-group-addon">AUTORIDAD</div>
+                    <select class="form-control" ng-model="modelo.cargo" ng-disabled="formularios.formulario.disabled">
+                        <option ng-repeat="c in cargos" value="{{c}}">{{c}}</option>
+                    </select>
+                </div>
+
+                <!-- BIOGRAFIA -->
+                <div>
+                    <div class="input-group-addon">BIOGRAFIA</div>
+                    <text-angular ta-toolbar="toolbars" ng-model="modelo.biografia" ta-disabled="formularios.formulario.disabled"></text-angular>
+                </div>
+                
+                <!-- COMPETENCIAS -->
+                <div>
+                    <div class="input-group-addon">COMPETENCIAS</div>
+                    <text-angular ta-toolbar="toolbars" ng-model="modelo.competencias" ta-disabled="formularios.formulario.disabled"></text-angular>
+                </div>
+
+                <!-- FORMACION -->
+                <div>
+                    <div class="input-group-addon">FORMACION</div>
+                    <text-angular ta-toolbar="toolbars" ng-model="modelo.formacion" ta-disabled="formularios.formulario.disabled"></text-angular>
+                </div>
+
+                <!-- EXPERIENCIA -->
+                <div>
+                    <div class="input-group-addon">EXPERIENCIA</div>
+                    <text-angular ta-toolbar="toolbars" ng-model="modelo.experiencia" ta-disabled="formularios.formulario.disabled"></text-amgular>
+                </div>
+
+                <!-- Nombre -->
+                <div class="input-group">
+                    <div class="input-group-addon">TELEFONO</div>
+                    <input class="form-control" type="text" maxlength="50" ng-model="modelo.telefono" ng-disabled="formularios.formulario.disabled">
+                </div>
+
+                <!-- EMAIL -->
+                <div class="input-group">
+                    <div class="input-group-addon">EMAIL</div>
+                    <input class="form-control" type="text" maxlength="15" ng-model="email.usuario" ng-disabled="formularios.formulario.disabled">
+                    <div class="input-group-addon">@</div>
+                    <input class="form-control" type="text" maxlength="15" ng-model="email.dominio" ng-disabled="formularios.formulario.disabled">
+                    <div class="input-group-addon">.</div>
+                    <input class="form-control" type="text" maxlength="15" ng-model="email.locacion" ng-disabled="formularios.formulario.disabled">
+                </div>
+
+            </div>
+            <div class="panel-footer clearfix" ng-show="formularios.formulario.botones.visualizar">
+                <button ng-click="formularios.formulario.acciones.visualizar()" class="btn btn-success pull-right">Aceptar</button>
+            </div>
+            <div class="panel-footer clearfix" ng-show="formularios.formulario.botones.nuevo">
+                <button ng-click="formularios.formulario.acciones.nuevo.cancelar()" class="btn btn-danger pull-left">Cancelar</button>
+                <button ng-click="formularios.formulario.acciones.nuevo.aceptar()" class="btn btn-success pull-right">Aceptar</button>
+            </div>
+            <div class="panel-footer clearfix" ng-show="formularios.formulario.botones.modificar">
+                <button ng-click="formularios.formulario.acciones.modificar.cancelar()" class="btn btn-danger pull-left">Cancelar</button>
+                <button ng-click="formularios.formulario.acciones.modificar.aceptar()" class="btn btn-success pull-right">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
