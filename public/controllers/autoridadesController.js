@@ -164,16 +164,17 @@ angular
 							$scope.hasta.mes = hasta[1];
 							$scope.hasta.anio = hasta[0];
 
-							var email = $scope.modelo.email.split('@');
-							var usuario = email[0];
-
-							var email = email[1].split('.');
-							var dominio = email[0];
-							var locacion = email[1];
-							if(email[2]!=undefined) locacion += '.'+email[2]; 
-							$scope.email.usuario = usuario;
-							$scope.email.dominio = dominio;
-							$scope.email.locacion = locacion;
+							if($scope.modelo.email!=null){
+								var email = $scope.modelo.email.split('@');
+								var usuario = email[0];
+								var email = email[1].split('.');
+								var dominio = email[0];
+								var locacion = email[1];
+								if(email[2]!=undefined) locacion += '.'+email[2]; 
+								$scope.email.usuario = usuario;
+								$scope.email.dominio = dominio;
+								$scope.email.locacion = locacion;
+							}
 
 							$scope.formularios.formulario.display=true;
 							$scope.formularios.formulario.disabled=false;
@@ -302,54 +303,67 @@ angular
 				modificar:{
 					cancelar:function(){$scope.httpGetAutoridades();},
 					aceptar:function(){
-
 						$session.autorize(function(){
-							
-							// Send fotografia.
-							var date = new Date;
+							$scope.modelo.desde=$scope.desde.anio+'-'+$scope.desde.mes+'-'+$scope.desde.dia;
+							$scope.modelo.hasta=$scope.hasta.anio+'-'+$scope.hasta.mes+'-'+$scope.hasta.dia;
+							$scope.modelo.email=$scope.email.usuario+'@'+$scope.email.dominio+'.'+$scope.email.locacion;
 
-							var fileNameForSend  = '';
-							fileNameForSend += date.getFullYear().toString();
-							fileNameForSend += date.getMonth().toString();
-							fileNameForSend += date.getDate().toString();
-							fileNameForSend += date.getHours().toString();
-							fileNameForSend += date.getMinutes().toString();
-							fileNameForSend += date.getSeconds().toString();
-							fileNameForSend += date.getMilliseconds().toString();
-							fileNameForSend = md5.createHash(fileNameForSend);
-							fileNameForSend += '-'+$scope.file.name;
+							if($scope.file===undefined){
+								uri='/rest/ful/adminaut/index.php/autoridad/'+$scope.modelo.id;
+								$http
+									.put(uri,$scope.modelo)
+									.error(function(){
+										console.log(uri+' : No Data');
+										$scope.resetModelo();
+										$scope.httpGetAutoridades();
+									})
+									.success(function(json){if(json.result==true){
+										$scope.resetModelo();
+										$scope.httpGetAutoridades();
+									}});
+							}
+							else {
+								// Send fotografia.
+								var date = new Date;
+								var fileNameForSend  = '';
+								fileNameForSend += date.getFullYear().toString();
+								fileNameForSend += date.getMonth().toString();
+								fileNameForSend += date.getDate().toString();
+								fileNameForSend += date.getHours().toString();
+								fileNameForSend += date.getMinutes().toString();
+								fileNameForSend += date.getSeconds().toString();
+								fileNameForSend += date.getMilliseconds().toString();
+								fileNameForSend = md5.createHash(fileNameForSend);
+								fileNameForSend += '-'+$scope.file.name;
+								$scope.modelo.archivo=fileNameForSend;
 
-							var json = {
-								fileName:fileNameForSend,
-								fileContent:$scope.canvas.toDataURL($scope.file.type.toString(),0.8)
-							};
+								var json = {
+									fileName:fileNameForSend,
+									fileContent:$scope.canvas.toDataURL($scope.file.type.toString(),0.8)
+								};
 
-							var uri = '/rest/ful/adminaut/index.php/upload';
-							$http
-								.post(uri,json)
-								.error(function(){console.log(uri+' : No Data');})
-								.success(function(json){if(json.result===true){
+								var uri = '/rest/ful/adminaut/index.php/upload';
+								$http
+									.post(uri,json)
+									.error(function(){console.log(uri+' : No Data');})
+									.success(function(json){if(json.result===true){
 
-									//Send model.
-									$scope.modelo.archivo = fileNameForSend;
-									$scope.modelo.desde=$scope.desde.anio+'-'+$scope.desde.mes+'-'+$scope.desde.dia;
-									$scope.modelo.hasta=$scope.hasta.anio+'-'+$scope.hasta.mes+'-'+$scope.hasta.dia;
-									$scope.modelo.email=$scope.email.usuario+'@'+$scope.email.dominio+'.'+$scope.email.locacion;
-									uri='/rest/ful/adminaut/index.php/autoridad';
-									$http
-										.post(uri,$scope.modelo)
-										.error(function(){
-											console.log(uri+' : No Data');
-											$scope.resetModelo();
-											$scope.httpGetAutoridades();
-										})
-										.success(function(json){if(json.result==true){
-											$scope.resetModelo();
-											$scope.httpGetAutoridades();
-										}});
+										//Send model.
+										uri='/rest/ful/adminaut/index.php/autoridad/'+$scope.modelo.id;
+										$http
+											.put(uri,$scope.modelo)
+											.error(function(){
+												console.log(uri+' : No Data');
+												$scope.resetModelo();
+												$scope.httpGetAutoridades();
+											})
+											.success(function(json){if(json.result==true){
+												$scope.resetModelo();
+												$scope.httpGetAutoridades();
+											}});
 
-								}});
-
+									}});
+							}
 						});
 					}
 				},
